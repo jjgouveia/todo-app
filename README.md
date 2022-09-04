@@ -2,11 +2,19 @@
 
 O aplicativo tem por objetivo servir como uma lista de tarefas.
 
-## Features v0.1
+## Changelog v0.1
 
 - [x]  Primeira build 🐱‍👤
-- [x]  Lista tarefas 
+- [x]  Renderiza a lista tarefas 
 - [x]  Marca as tarefas concluídas
+
+## Changelog v0.2
+
+- [x]  Definido o nome do app: Todofy
+- [x]  Definidas novas fontes no documento
+- [x]  Feita componentização inicial no código-fonte
+- [x]  Estilização inicial
+
 
 ### Road Map
 
@@ -15,7 +23,7 @@ O aplicativo tem por objetivo servir como uma lista de tarefas.
 - [ ]  Dark Mode
 - [ ]  Tela de login
 - [ ]  Local Storage
-- [ ]  Categorizar por concluídas
+- [ ]  Categorizar por "todas", "em andamento" e "finalizadas"
 
 ## Feedback
 
