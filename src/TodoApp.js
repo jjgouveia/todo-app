@@ -10,34 +10,42 @@ export default function TodoApp() {
   const [task, setTask] = useState("");
   const [itemsList, setItemsList] = useState([]);
 
-  const handleInput = ({ target: { value, type, checked, id: ide } }) => {
-    if (type === "text") {
+  const handleInput = ({ target: { value} }) => {
       const inputTask = value;
       setTask(inputTask);
       return;
-    }
-    if (checked) {
-      document.querySelectorAll(`#${ide}`)[0].className="checked"
-    } else {
-      document.querySelectorAll(`#${ide}`)[0].className=""
-    }
   };
 
-  function toggleTaskCompleted(id) {
+  function toggleTaskCompleted(id, event) {
+    const { checked } = event.target;
+    if (checked) {
+      document.querySelectorAll(`#${id}`)[0].className="checked"
+    } else {
+      document.querySelectorAll(`#${id}`)[0].className=""
+    }
+
     const updatedTasks = itemsList.map((task) => {
-      // if this task has the same ID as the edited task
       if (id === task.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
         return {...task, completed: !task.completed}
       }
       return task;
     });
-    setTask(updatedTasks);
+    setItemsList(updatedTasks);
+  }
+
+  function editTask (id, newName) {
+    const editedTask = itemsList.map((task) => {
+      if (id === task.id) {
+        return { ...task, task: newName }
+      }
+      return task;
+    });
+    setItemsList(editedTask);
   }
 
   const deleteTask = (id) => {
-    console.log(id);
+    const remainingTasks = itemsList.filter((task) => id !== task.id);
+    setItemsList(remainingTasks);
   }
 
   const handleList = (e) => {
@@ -45,13 +53,12 @@ export default function TodoApp() {
     if (!task) return;
     const newTask = { id: `todo-${nanoid()}`, task, completed: false }
     setItemsList([...itemsList, newTask]);
-
     setTask("");
   };
 
   const plural = itemsList.length !== 1 ? 's' : '';
   const remainingTasks = `${itemsList.length} tarefa${plural} restante${plural}`
-  console.log(remainingTasks);
+  const emptyList = "A lista ainda está vazia"
 
   return (
     <div className="todoapp stack-large">
@@ -62,13 +69,13 @@ export default function TodoApp() {
       handleInput={ handleInput }
       />
       <FilterButton />
-      <h3>{ itemsList.length !== 0 ? remainingTasks : 'A lista ainda está vazia!' }</h3>
+      <h3>{ itemsList.length !== 0 ? remainingTasks : emptyList }</h3>
       <ul
         area-aria-labelledby="list-heading"
         className="todo-list stack-large stack-exception"
       >
         {
-          itemsList?.map((task, index) => (
+          itemsList?.map((task) => (
             <Todo
             key={ task.id }
             task={ task }
@@ -76,6 +83,7 @@ export default function TodoApp() {
             completed={ task.completed }
             toggleTaskCompleted={toggleTaskCompleted}
             deleteTask={ deleteTask }
+            editedTask={ editTask }
             />
           ))
         }
