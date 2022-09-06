@@ -4,30 +4,61 @@ import Todo from "./components/Todo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Footer from "./components/Footer";
+import { nanoid } from "nanoid";
 
 export default function TodoApp() {
   const [task, setTask] = useState("");
   const [itemsList, setItemsList] = useState([]);
 
-  const handleInput = ({ target: { value, type, checked, id } }) => {
-    if (type === "text") {
+  const handleInput = ({ target: { value} }) => {
       const inputTask = value;
       setTask(inputTask);
       return;
-    }
-    if (checked) {
-      document.getElementById(id).className = "checked";
-    } else {
-      document.getElementById(id).className = "";
-    }
   };
+
+  function toggleTaskCompleted(id, event) {
+    const { checked } = event.target;
+    if (checked) {
+      document.querySelectorAll(`#${id}`)[0].className="checked"
+    } else {
+      document.querySelectorAll(`#${id}`)[0].className=""
+    }
+
+    const updatedTasks = itemsList.map((task) => {
+      if (id === task.id) {
+        return {...task, completed: !task.completed}
+      }
+      return task;
+    });
+    setItemsList(updatedTasks);
+  }
+
+  function editTask (id, newName) {
+    const editedTask = itemsList.map((task) => {
+      if (id === task.id) {
+        return { ...task, task: newName }
+      }
+      return task;
+    });
+    setItemsList(editedTask);
+  }
+
+  const deleteTask = (id) => {
+    const remainingTasks = itemsList.filter((task) => id !== task.id);
+    setItemsList(remainingTasks);
+  }
 
   const handleList = (e) => {
     e.preventDefault();
     if (!task) return;
-    setItemsList([...itemsList, task]);
+    const newTask = { id: `todo-${nanoid()}`, task, completed: false }
+    setItemsList([...itemsList, newTask]);
     setTask("");
   };
+
+  const plural = itemsList.length !== 1 ? 's' : '';
+  const remainingTasks = `${itemsList.length} tarefa${plural} restante${plural}`
+  const emptyList = "A lista ainda está vazia"
 
   return (
     <div className="todoapp stack-large">
@@ -38,20 +69,24 @@ export default function TodoApp() {
       handleInput={ handleInput }
       />
       <FilterButton />
+      <h3>{ itemsList.length !== 0 ? remainingTasks : emptyList }</h3>
       <ul
         area-aria-labelledby="list-heading"
         className="todo-list stack-large stack-exception"
       >
-        {itemsList.length ? (
-          itemsList?.map((task, index) => (
+        {
+          itemsList?.map((task) => (
             <Todo
+            key={ task.id }
             task={ task }
-            index={ index }
-            handleInput={ handleInput }/>
+            handleInput={ handleInput }
+            completed={ task.completed }
+            toggleTaskCompleted={toggleTaskCompleted}
+            deleteTask={ deleteTask }
+            editedTask={ editTask }
+            />
           ))
-        ) : (
-          <h3>A lista ainda está vazia!</h3>
-        )}
+        }
       </ul>
       <Footer />
     </div>
