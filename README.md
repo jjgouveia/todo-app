@@ -22,12 +22,13 @@ O aplicativo tem por objetivo servir como uma lista de tarefas simples, com a po
 
 - [x]  É possível deletar uma tarefa;
 - [x]  É possível marcar uma tarefa como concluídas e setá-la no state para implementações futuras;
+- [x]  É possível editar uma tarefa;
 
 
 ### Road Map
 
 - [x]  Excluir tarefa
-- [ ]  Editar tarefa
+- [x]  Editar tarefa
 - [ ]  Dark Mode
 - [ ]  Tela de login
 - [ ]  Local Storage
