@@ -24,6 +24,9 @@ O aplicativo tem por objetivo servir como uma lista de tarefas simples, com a po
 - [x]  É possível marcar uma tarefa como concluídas e setá-la no state para implementações futuras;
 - [x]  É possível editar uma tarefa;
 
+## Changelog v0.4
+
+- [x]  É possível filtrar por "todas", "em andamento" e "finalizadas";
 
 ### Road Map
 
@@ -32,7 +35,7 @@ O aplicativo tem por objetivo servir como uma lista de tarefas simples, com a po
 - [ ]  Dark Mode
 - [ ]  Tela de login
 - [ ]  Local Storage
-- [ ]  Categorizar por "todas", "em andamento" e "finalizadas"
+- [x]  Categorizar por "todas", "em andamento" e "finalizadas"
 
 ### Construído com: 
 

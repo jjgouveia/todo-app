@@ -6,9 +6,22 @@ import FilterButton from "./components/FilterButton";
 import Footer from "./components/Footer";
 import { nanoid } from "nanoid";
 
+const FILTER_MAP = {
+// The All filter shows all tasks.
+// The Active filter shows tasks whose completed prop is false.
+// The Completed filter shows tasks whose completed prop is true.
+
+  Todas: () => true,
+  Ativas: (task) => !task.completed,
+  Concluídas: (task) => task.completed
+}
+
+const FILTER_NAMES = Object.keys(FILTER_MAP);
+
 export default function TodoApp() {
   const [task, setTask] = useState("");
   const [itemsList, setItemsList] = useState([]);
+  const [filter, setFilter] = useState("Todas");
 
   const handleInput = ({ target: { value} }) => {
       const inputTask = value;
@@ -56,9 +69,31 @@ export default function TodoApp() {
     setTask("");
   };
 
-  const plural = itemsList.length !== 1 ? 's' : '';
-  const remainingTasks = `${itemsList.length} tarefa${plural} restante${plural}`
+  const plural = itemsList.filter(FILTER_MAP["Concluídas"]).length !== 1 ? 's' : '';
+  const remainingTasks = `${itemsList.filter(FILTER_MAP["Concluídas"]).length} tarefa${plural} concluída${plural}`
   const emptyList = "A lista ainda está vazia"
+
+  const filterList = FILTER_NAMES.map((name) => (
+    <FilterButton
+    key={name}
+    name={name}
+    setFilter={ setFilter }
+    isPressed={ name === filter }/>
+  ));
+
+  const taskList = itemsList
+  .filter(FILTER_MAP[filter])
+  .map((task) => (
+    <Todo
+    key={ task.id }
+    task={ task }
+    handleInput={ handleInput }
+    completed={ task.completed }
+    toggleTaskCompleted={toggleTaskCompleted}
+    deleteTask={ deleteTask }
+    editedTask={ editTask }
+    />
+  ));
 
   return (
     <div className="todoapp stack-large">
@@ -68,24 +103,18 @@ export default function TodoApp() {
       handleList={ handleList }
       handleInput={ handleInput }
       />
-      <FilterButton />
+      <div className="filters btn-group stack-exception">
+      {
+        itemsList.length !== 0 && (filterList)
+      }
+      </div>
       <h3>{ itemsList.length !== 0 ? remainingTasks : emptyList }</h3>
       <ul
         area-aria-labelledby="list-heading"
         className="todo-list stack-large stack-exception"
       >
         {
-          itemsList?.map((task) => (
-            <Todo
-            key={ task.id }
-            task={ task }
-            handleInput={ handleInput }
-            completed={ task.completed }
-            toggleTaskCompleted={toggleTaskCompleted}
-            deleteTask={ deleteTask }
-            editedTask={ editTask }
-            />
-          ))
+          taskList
         }
       </ul>
       <Footer />
