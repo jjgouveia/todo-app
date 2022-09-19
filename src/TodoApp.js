@@ -1,15 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style/Todo.css";
 import Todo from "./components/Todo";
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import Footer from "./components/Footer";
 import { nanoid } from "nanoid";
+import { setToLoStoTodoList } from "./services/localStorageHandler";
 
 const FILTER_MAP = {
-// The All filter shows all tasks.
-// The Active filter shows tasks whose completed prop is false.
-// The Completed filter shows tasks whose completed prop is true.
 
   Todas: () => true,
   Ativas: (task) => !task.completed,
@@ -44,6 +42,7 @@ export default function TodoApp() {
       return task;
     });
     setItemsList(updatedTasks);
+    setToLoStoTodoList(updatedTasks);
   }
 
   function editTask (id, newName) {
@@ -54,11 +53,13 @@ export default function TodoApp() {
       return task;
     });
     setItemsList(editedTask);
+    setToLoStoTodoList(editedTask)
   }
 
   const deleteTask = (id) => {
     const remainingTasks = itemsList.filter((task) => id !== task.id);
     setItemsList(remainingTasks);
+    setToLoStoTodoList(remainingTasks);
   }
 
   const handleList = (e) => {
@@ -66,6 +67,7 @@ export default function TodoApp() {
     if (!task) return;
     const newTask = { id: `todo-${nanoid()}`, task, completed: false }
     setItemsList([...itemsList, newTask]);
+    setToLoStoTodoList([...itemsList, newTask]);
     setTask("");
   };
 
@@ -94,6 +96,11 @@ export default function TodoApp() {
     editedTask={ editTask }
     />
   ));
+
+  useEffect(() => {
+    if(!localStorage.getItem("tasks")) return localStorage.setItem("tasks", [])
+  });
+
 
   return (
     <div className="todoapp stack-large">
