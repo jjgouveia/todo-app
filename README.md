@@ -21,25 +21,30 @@ O aplicativo tem por objetivo servir como uma lista de tarefas simples, com a po
 ## Changelog v0.3
 
 - [x]  É possível deletar uma tarefa;
-- [x]  É possível marcar uma tarefa como concluídas e setá-la no state para implementações futuras;
+- [x]  É possível marcar uma tarefa como concluída e setá-la no state para implementações futuras;
 - [x]  É possível editar uma tarefa;
 
 ## Changelog v0.4
 
-- [x]  É possível filtrar por "todas", "em andamento" e "finalizadas";
+- [x]  É possível filtrar por "todas", "em andamento (ativas)" e "concluídas";
+
+## Changelog v0.5
+
+- [x]  Implementação do Local Storage
 
 ### Road Map
 
 - [x]  Excluir tarefa
 - [x]  Editar tarefa
+- [ ]  Styled Components
 - [ ]  Dark Mode
 - [ ]  Tela de login
-- [ ]  Local Storage
+- [x]  Local Storage
 - [x]  Categorizar por "todas", "em andamento" e "finalizadas"
 
 ### Construído com: 
 
-Algumas bibliotecas e frameworks utilizados na construção desse projeto:
+Bibliotecas e frameworks utilizados na construção desse projeto:
 
 * [![React][React.js]][React-url]
 <!-- * [![Bootstrap][Bootstrap.com]][Bootstrap-url] -->
